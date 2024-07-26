@@ -8,6 +8,17 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+    transition: opacity 0.5s ease;
+    opacity: 0;
+  }
+  
+  .card-container.loaded {
+    opacity: 1;
+  }
+  
+  .loading-spinner {
+    font-size: 1.5em;
+    color: #000;
   }
   
   /* Resolução padrão */
@@ -28,14 +39,13 @@
       background-image: url('../assets/wedding-card-portrait.svg');
     }
   }
-
-    /* Para telas médias (tablets) */
-    @media (min-width: 200px) and (max-width: 601px) {
-        .card-container {
-          background-image: url('../assets/wedding-card-portrait-small.svg');
-        }
-      }
-      
+  
+  /* Para telas pequenas (celulares) */
+  @media (min-width: 200px) and (max-width: 601px) {
+    .card-container {
+      background-image: url('../assets/wedding-card-portrait-small.svg');
+    }
+  }
   
   /* Para telas grandes (desktops) */
   @media (min-width: 1201px) {
