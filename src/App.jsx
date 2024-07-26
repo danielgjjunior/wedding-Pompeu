@@ -1,68 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import WeddingCard from './components/WeddingCard'; 
-import WeddingCardDefault from './assets/wedding-card.svg'; 
-import WeddingCardPortrait from './assets/wedding-card-portrait.svg';
-import WeddingCardPortraitSmall from './assets/wedding-card-portrait-small.png';
 import './App.css';
+import smallPortrait from './assets/wedding-card-portrait-small.svg';
+import portrait from './assets/wedding-card-portrait.svg';
+import landscape from './assets/wedding-card.svg';
 
-function App() {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [backgroundImage, setBackgroundImage] = useState('');
-
-  useEffect(() => {
-    const loadImage = (src) => {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.src = src;
-        img.onload = () => resolve(src);
-        img.onerror = (err) => reject(err);
-      });
-    };
-
-    const loadImages = async () => {
-      try {
-        const largeImage = loadImage(WeddingCardDefault);
-        const mediumImage = loadImage(WeddingCardPortrait);
-        const smallImage = loadImage(WeddingCardPortraitSmall);
-        const images = await Promise.all([largeImage, mediumImage, smallImage]);
-        setBackgroundImage(images[0]); // Set the first image as default
-        setIsLoaded(true);
-      } catch (err) {
-        console.error("Error loading images", err);
-      }
-    };
-
-    loadImages();
-  }, []);
+const App = () => {
+  const [loading, setLoading] = useState(true);
+  const [imageSrc, setImageSrc] = useState('');
 
   useEffect(() => {
-    const updateBackgroundImage = () => {
+    const handleResize = () => {
       const width = window.innerWidth;
-      if (width <= 600) {
-        setBackgroundImage(WeddingCardPortraitSmall);
-      } else if (width <= 1000) {
-        setBackgroundImage(WeddingCardPortrait);
-      } else if (width <= 2000) {
-        setBackgroundImage(WeddingCard);
+      let src;
+      if (width < 600) {
+        src = smallPortrait;
+      } else if (width < 900) {
+        src = portrait;
       } else {
-        setBackgroundImage(WeddingCardDefault);
+        src = landscape;
       }
+      setImageSrc(src);
     };
 
-    updateBackgroundImage();
-    window.addEventListener('resize', updateBackgroundImage);
+    handleResize();
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      window.removeEventListener('resize', updateBackgroundImage);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
   return (
-    <div className="App">
-      {!isLoaded && <div className="loading-spinner">Loading...</div>}
-      {isLoaded && <WeddingCard backgroundImage={backgroundImage} />}
+    <div className="container">
+      {loading && <div className="loading">Loading...</div>}
+      <img
+        src={imageSrc}
+        alt="Wedding Card"
+        className={`responsive-image ${loading ? 'hidden' : ''}`}
+        onLoad={() => setLoading(false)}
+      />
     </div>
   );
-}
+};
 
 export default App;
