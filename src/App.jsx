@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import WeddingCard from './components/WeddingCard';
+import WeddingCard from './components/WeddingCard'; 
 import WeddingCardDefault from './assets/wedding-card.svg'; 
 import WeddingCardPortrait from './assets/wedding-card-portrait.svg';
-import WeddingCardPortraitSmall from './assets/wedding-card-portrait-small.svg';
+import WeddingCardPortraitSmall from './assets/wedding-card-portrait-small.png';
 import './App.css';
 
 function App() {
@@ -40,8 +40,10 @@ function App() {
       const width = window.innerWidth;
       if (width <= 600) {
         setBackgroundImage(WeddingCardPortraitSmall);
-      } else if (width <= 1200) {
+      } else if (width <= 1000) {
         setBackgroundImage(WeddingCardPortrait);
+      } else if (width <= 2000) {
+        setBackgroundImage(WeddingCard);
       } else {
         setBackgroundImage(WeddingCardDefault);
       }
